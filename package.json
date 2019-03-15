@@ -1,0 +1,22 @@
+{
+  "name": "hackeresume",
+  "version": "1.0.0",
+  "description": "Social network for developers",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChaoTzuJung/hackeresume.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "ChaoTzuJung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChaoTzuJung/hackeresume/issues"
+  },
+  "homepage": "https://github.com/ChaoTzuJung/hackeresume#readme"
+}
