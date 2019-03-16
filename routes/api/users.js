@@ -55,4 +55,34 @@ router.post('/register', (req, res) => {
         });
 });
 
+// @route   GET api/users/login
+// @desc    Login User / Returning JWT Token
+// @access  Public
+router.post('/login', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    //Find user by email
+    User.findOne({ email: email })
+        // use參數是資料庫的user
+        .then(user => {
+            // Check for user
+            if(!user) {
+                return res.status(404).json({ email: '沒有這個使用者' });
+            }
+            // Check for user
+            // text plain password (你輸入的的 password) / hash password (資料庫的 password)
+            bcrypt.compare(password, user.password)
+                .then(isMatch => {
+                    // user pass then generate token
+                    if(isMatch) {
+                        res.json({ msg: '登入成功' })
+                    } else {
+                        return res.status(400).json({ password: '密碼輸入錯誤' });
+                    }
+                })
+        })
+});
+
+
 module.exports = router;
