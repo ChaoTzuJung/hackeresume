@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar'); // 製作 avatar 套件
 const bcrypt = require('bcryptjs'); // 現在 password 只是 plain text 所以我們要幫他做 hash 加密，用 bcryptjs
+const jwt = require('jsonwebtoken'); // Create jwt
+const keys = require('../../config/keys'); // Create key
+
 
 // Load User model
 const User = require('../../models/User');
@@ -76,7 +79,16 @@ router.post('/login', (req, res) => {
                 .then(isMatch => {
                     // user pass then generate token
                     if(isMatch) {
-                        res.json({ msg: '登入成功' })
+                        // Use match
+                        // craete jwt payload that is what we wnat to include in token, and token have user information
+                        const payload = { id: user.id, name: user.name, avatar: user.avatar }
+                        // create Sign Token (parload + key + time limit) 3600 接近 1hr
+                        jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+                            res.json({ 
+                                success: true,
+                                token: 'Bearer' + token // 前面字串可以亂打
+                            });
+                        });
                     } else {
                         return res.status(400).json({ password: '密碼輸入錯誤' });
                     }
