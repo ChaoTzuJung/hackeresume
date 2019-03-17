@@ -2,28 +2,35 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar'); // 製作 avatar 套件
 const bcrypt = require('bcryptjs'); // 現在 password 只是 plain text 所以我們要幫他做 hash 加密，用 bcryptjs
-const jwt = require('jsonwebtoken'); // Create jwt
-const keys = require('../../config/keys'); // Create key
+const jwt = require('jsonwebtoken');
+const keys = require('../../config/keys');
+const passport = require('passport');
 
+// Load Input validation
+const validationRegisterInput = require('../../util/validation/register');
+const validationLoginInput = require('../../util/validation/login');
 
 // Load User model
 const User = require('../../models/User');
-
-// @route   GET api/users/test
-// @desc    Test users route
-// @access  Public 
-router.get('/test', (req, res) => res.json({msg: 'Users work!'}));
 
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
+    const { errors, isValid } = validationRegisterInput(req.body)
+
+    // Check Validation - 有錯誤訊息
+    if (!isValid) {
+        return res.status(400).json(errors)
+    }
+
     // Use mongoose method looking for email in the record, and req.body is in form
     User.findOne({ email: req.body.email })
         // There is already have user with email address
         .then(user => {
             if(user) {
-                return res.status(400).json({ email: "Email 已經註冊過 ！！" })
+                errors.email = 'Email 已經註冊過 ！！'
+                return res.status(400).json(errors);
             } else {
                 // 透過email建立avatar
                 const avatar = gravatar.url(req.body.email, {
@@ -62,6 +69,14 @@ router.post('/register', (req, res) => {
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
+
+    const { errors, isValid } = validationLoginInput(req.body)
+
+    // Check Validation - 有錯誤訊息
+    if (!isValid) {
+        return res.status(400).json(errors)
+    }
+
     const email = req.body.email;
     const password = req.body.password;
 
@@ -71,7 +86,8 @@ router.post('/login', (req, res) => {
         .then(user => {
             // Check for user
             if(!user) {
-                return res.status(404).json({ email: '沒有這個使用者' });
+                errors.email = '沒有這個使用者'
+                return res.status(404).json(errors);
             }
             // Check for user
             // text plain password (你輸入的的 password) / hash password (資料庫的 password)
@@ -86,15 +102,26 @@ router.post('/login', (req, res) => {
                         jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
                             res.json({ 
                                 success: true,
-                                token: 'Bearer' + token // 前面字串可以亂打
+                                token: 'Bearer ' + token // 前面字串可以亂打
                             });
                         });
                     } else {
-                        return res.status(400).json({ password: '密碼輸入錯誤' });
+                        errors.password = '密碼輸入錯誤'
+                        return res.status(400).json(errors);
                     }
                 })
         })
 });
 
+// @route   GET api/users/current
+// @desc    Return current users whoever the token belongs to
+// @access  Private 
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+    })
+})
 
 module.exports = router;
