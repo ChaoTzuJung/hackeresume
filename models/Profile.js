@@ -29,13 +29,12 @@ const ProfileSchema = new Schema({
         type: String,
         required: true, // senior / junior .. 
     },
-    skill: {
+    skills: {
         type: [String],
         required: true,
     },
     bio: {
         type: String,
-        required: true, // senior / junior ..
     },
     githubusername: {
         type: String,
