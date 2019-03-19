@@ -7,8 +7,8 @@ const keys = require('../../config/keys');
 const passport = require('passport');
 
 // Load Input validation
-const validationRegisterInput = require('../../util/validation/register');
-const validationLoginInput = require('../../util/validation/login');
+const validateRegisterInput = require('../../util/validation/register');
+const validateLoginInput = require('../../util/validation/login');
 
 // Load User model
 const User = require('../../models/User');
@@ -17,7 +17,7 @@ const User = require('../../models/User');
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
-    const { errors, isValid } = validationRegisterInput(req.body)
+    const { errors, isValid } = validateRegisterInput(req.body)
 
     // Check Validation - 有錯誤訊息
     if (!isValid) {
@@ -70,7 +70,7 @@ router.post('/register', (req, res) => {
 // @access  Public
 router.post('/login', (req, res) => {
 
-    const { errors, isValid } = validationLoginInput(req.body)
+    const { errors, isValid } = validateLoginInput(req.body)
 
     // Check Validation - 有錯誤訊息
     if (!isValid) {

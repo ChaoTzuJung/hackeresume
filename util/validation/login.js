@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const isEmpty = require('./isEmpty');
 
-module.exports = function ValidatorLoginInput(data) {
+module.exports = function validateLoginInput(data) {
     const errors = {};
 
     // 登入只需要 email 與 password

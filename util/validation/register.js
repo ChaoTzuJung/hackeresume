@@ -1,7 +1,7 @@
 const Validator = require('validator');
 const isEmpty = require('./isEmpty');
 
-module.exports = function ValidatorRegisterInput(data) {
+module.exports = function validateRegisterInput(data) {
     const errors = {};
 
     // data 的 name 是 空的就給空字串
