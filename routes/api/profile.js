@@ -15,7 +15,6 @@ const User = require('../../models/User');
 // @desc    Get current users profile
 // @access  Private
 
-//我們無法使用 api/profile/:id
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const errors = {}
     // want to fetch current user profile, 因為有做 protect 所以先拿到 token (that is put the user into request for user.)
@@ -29,8 +28,65 @@ router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => 
             }
             res.json(profile);
         })
-        .catch(err => res.status(404).json(errors))
+        .catch(err => res.status(404).json(err))
 });
+
+// @route   GET api/profile/all
+// @desc    Get all profiles
+// @access  Public
+router.get('/all', (req, res) => {
+    const errors = {};
+    Profile.find()
+    .populate('user', ['name', 'avatar'])
+    .then(profiles => {
+        if(!profiles) {
+            errors.noprofile = '目前沒有任何履歷'
+            return res.status(404).json(errors)
+        }
+        res.json(profiles)
+    })
+    .catch(err => res.status(404).json({ profile: '沒有這個使用者的履歷' }))
+})
+
+// @route   GET api/profile/handle/:handle
+// @desc    Get profile by handle
+// @access  Public
+
+router.get('/handle/:handle' , (req, res) => {
+    const error = {};
+
+    Profile.findOne({ handle: req.params.handle })
+        .populate('user', ['name', 'avatar'])
+        .then(profile => {
+            if(!profile) {
+                error.noprofile = '使用者尚未創建履歷';
+                res.status(404).json(errors);
+            }
+            res.json(profile)
+        })
+        .catch(err => res.status(404).json(err))
+});
+
+// @route   GET api/profile/user/:user_id 
+// @desc    Get profile by user ID
+// @access  Public
+
+// 因為是 Public route 所以不用 passport.authenticate(
+    router.get('/user/:user_id' , (req, res) => {
+        const error = {};
+    
+        Profile.findOne({ user: req.params.user_id })
+            .populate('user', ['name', 'avatar'])
+            .then(profile => {
+                if(!profile) {
+                    error.noprofile = '使用者尚未創建履歷';
+                    res.status(404).json(errors);
+                }
+                res.json(profile)
+            })
+            // 這邊不回傳 err 是因為 err 是 mongoose的錯誤訊息，當找不到user ID 應該要客製化錯誤訊息
+            .catch(err => res.status(404).json({ profile: '沒有這個使用者的履歷' }))
+    });
 
 // @route   POST api/profile
 // @desc    Create or Edit user profile
