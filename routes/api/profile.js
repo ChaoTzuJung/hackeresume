@@ -213,4 +213,64 @@ router.post('/education', passport.authenticate('jwt', { session: false }), (req
     })
 })
 
+// @route   DELETE api/profile/experience/:exp_id
+// @desc    Delete experience from profile
+// @access  Private
+router.delete('/experience/:exp_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+
+    Profile.findOne({ user: req.user.id })
+    .then(profile => {
+        // Get remove index (profile.experience is array)
+        const removeIndex = profile.experience
+            // 列出所有 exp_id
+            .map(item => item.id)
+            // 符合 url 上的 id
+            .indexOf(req.params.exp_id);
+
+        // Splice out of array
+        profile.experience.splice(removeIndex, 1);
+
+        // Save
+        profile.save().then(profile => res.json(profile));
+    })
+    .catch(err => res.status(404).json(err));
+})
+
+// @route   DELETE api/profile/education/:edu_id
+// @desc    Delete education from profile
+// @access  Private
+router.delete('/education/:exp_id', passport.authenticate('jwt', { session: false }), (req, res) => {
+
+    Profile.findOne({ user: req.user.id })
+    .then(profile => {
+        // Get remove index (profile.education is array)
+        const removeIndex = profile.education
+            // 列出所有 edu_id
+            .map(item => item.id)
+            // 符合 url 上的 id
+            .indexOf(req.params.edu_id);
+
+        // Splice out of array
+        profile.education.splice(removeIndex, 1);
+
+        // Save
+        profile.save().then(profile => res.json(profile));
+    })
+    .catch(err => res.status(404).json(err));
+})
+
+// @route   DELETE api/profile
+// @desc    Delete user and profile
+// @access  Private
+router.delete('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // 刪除 Profile collectio
+    Profile.findOneAndRemove({ user: req.user.id })
+    .then(() => {
+        User.findOneAndRemove({ _id: req.user.id })
+        .then(() => res.json({ success: true }))
+    })
+    // 刪除 User collection
+    .catch(err => res.status(404).json(err));
+})
+
 module.exports = router
