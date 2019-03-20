@@ -5,6 +5,8 @@ const passport = require('passport'); // protect the route
 
 // Load validdation
 const validateProfileInput  = require('../../util/validation/profile');
+const validateExperienceInput  = require('../../util/validation/experience');
+const validateEducationInput  = require('../../util/validation/education');
 
 // Load profile model
 const profile = require('../../models/Profile');
@@ -150,5 +152,65 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
             } 
         }) 
 });
+
+// @route   POST api/profile/experience
+// @desc    Add experience to profile
+// @access  Private
+router.post('/experience', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { errors, isValid } = validateExperienceInput(req.body);
+
+    //Check validation 
+    if(!isValid) {
+        // return any error with 400 status
+        return res.status(400).json(errors)
+    }
+    // find by the logged in users (userSchema 內有 user : objectId)
+    Profile.findOne({ user: req.user.id })
+    .then(profile => {
+        const newExp = {
+            title: req.body.title,
+            company: req.body.company,
+            locaton: req.body.locaton,
+            from: req.body.from,
+            to: req.body.to,
+            current: req.body.current,
+            description: req.body.description,
+        }
+
+        // Add to exp array (can't use push)
+        profile.experience.unshift(newExp);
+        profile.save().then(profile => res.json(profile))
+    })
+});
+
+// @route   POST api/profile/education
+// @desc    Add education to profile
+// @access  Private
+router.post('/education', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { errors, isValid } = validateEducationInput(req.body);
+
+    //Check validation 
+    if(!isValid) {
+        // return any error with 400 status
+        return res.status(400).json(errors)
+    }
+    // find by the logged in users (userSchema 內有 user : objectId)
+    Profile.findOne({ user: req.user.id })
+    .then(profile => {
+        const newEdu = {
+            school: req.body.school,
+            degree: req.body.degree,
+            fieldofstudy: req.body.fieldofstudy,
+            from: req.body.from,
+            to: req.body.to,
+            current: req.body.current,
+            description: req.body.description,
+        }
+
+        // Add to edu array (can't use push)
+        profile.education.unshift(newEdu);
+        profile.save().then(profile => res.json(profile))
+    })
+})
 
 module.exports = router
