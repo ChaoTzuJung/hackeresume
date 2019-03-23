@@ -15,11 +15,9 @@ const PostSchema = new Schema({
     // 每個 post 有自己的 name 跟 avatar 是因為我們不希望當使用者移除帳號，貼文跟著移除
     name: {
         type: String,
-        required: true
     },
     avatar: {
         type: String,
-        required: true
     },
     // likes 數量不是數字上單純相加，而是 array 是因為，每次按下 like 按鈕，按下 like 的 user id 會被加入 array，如果他突然又不喜歡，可以從 array 中 remove like
     likes: [
