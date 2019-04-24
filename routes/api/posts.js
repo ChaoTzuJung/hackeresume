@@ -37,7 +37,7 @@ router.get('/:id', (req, res) => {
 // @access  Private 
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     const { errors, isValid } = validatePostInput(req.body);
-    
+
     // Check out Validation
     if(!isValid) {
         // If any error, send 400 with error object
@@ -64,7 +64,6 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, re
         .then(profile => {
             Post.findById(req.params.id)
             .then(post => {
-                console.log(post);
                 // Check for post owner
                 if(post.user.toString() !== req.user.id) {
                     // Unauthorized: 防止有人想透過postman亂刪除別人文章
@@ -72,6 +71,61 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), (req, re
                 }
                 // Delete
                 post.remove().then(() => res.json({ success: true }));
+            })
+        })
+        .catch(err => res.status(404).json({ postnotfound: 'No post found' }))
+});
+
+// @route   POST api/posts/like/:id
+// @desc    Like posts
+// @access  Private
+router.post('/like/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // 確認刪除的是自己的 post
+    Profile.findOne({ user: req.user.id })
+        .then(profile => {
+            Post.findById(req.params.id)
+            .then(post => {
+                // 由 Post model 宣告的 schema 可以知道 post.likes 是 array
+                // length > 0 表示 你已經按過讚
+                if(post.likes.filter(like => like.user.toString() === req.user.id).length > 0) {
+                    res.status(400).json({ alreadyliked: 'User already liked this post' })
+                }
+
+                // Add user id to likes array
+                post.likes.unshift({ user: req.user.id });
+
+                post.save().then(post => res.json(post));
+            })
+        })
+        .catch(err => res.status(404).json({ postnotfound: 'No post found' }))
+});
+
+// @route   POST api/posts/unlike/:id
+// @desc    Unlike posts
+// @access  Private
+router.post('/unlike/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+    // Find User
+    Profile.findOne({ user: req.user.id })
+        // Get Profile
+        .then(profile => {
+            Post.findById(req.params.id)
+            .then(post => {
+                // Find if user is already in the array (LIKE array)
+                if(post.likes.filter(like => like.user.toString() === req.user.id).length === 0) {
+                    // 若like array 沒人按過讚
+                    res.status(400).json({ notliked: 'You have not yet like this post' })
+                }
+
+                // Get the Remove index
+                const removeIndex = post.likes
+                    .map(like => like.user.toString())
+                    .indexOf(req.user.id);
+
+                // splice out of array 從removeIndex 刪除/取代/新增 1個 Like
+                post.likes.splice(removeIndex, 1);
+
+                // Save
+                post.save().then(post => res.json(post));
             })
         })
         .catch(err => res.status(404).json({ postnotfound: 'No post found' }))
