@@ -1,16 +1,21 @@
 import React from 'react';
+import { browserRouter as Router, Route } from 'react-router-dom';
+
 import './App.css';
 import Navbar from './layouts/Navbar';
 import Landing from './layouts/Landing';
 import Footer from './layouts/Footer';
 
-const App = () => {
+function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Landing />
-      <Footer />
-    </div>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Route exact path="/" component={Landing}/>
+          <Landing />
+          <Footer />
+        </div>
+      </Router>
   );
 }
 
