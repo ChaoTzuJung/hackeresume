@@ -1,10 +1,15 @@
 import React from 'react';
 import './App.css';
+import Navbar from './layouts/Navbar';
+import Landing from './layouts/Landing';
+import Footer from './layouts/Footer';
 
 function App() {
   return (
     <div className="App">
-      <h1>React Start here</h1>
+      <Navbar />
+      <Landing />
+      <Footer />
     </div>
   );
 }
