@@ -4,7 +4,7 @@ import Navbar from './layouts/Navbar';
 import Landing from './layouts/Landing';
 import Footer from './layouts/Footer';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <Navbar />
