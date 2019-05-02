@@ -57,7 +57,7 @@ router.post('/register', (req, res) => {
                         // 儲存 newUser 到 mongoose
                         newUser
                             .save()
-                            .then(user => res.json(user))
+                            .then(user => res.json(user)) // 這邊的資料前端會用axios去post並回傳它
                             .catch(err => console.log(err));
                     });
                 });
