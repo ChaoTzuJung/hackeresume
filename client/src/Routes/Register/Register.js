@@ -1,6 +1,8 @@
-import React, { Component } from 'react'
-import axios from 'axios';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
+import { connect } from 'react-redux';
+import { registerUser } from '../../actions/auth';
 
 class Register extends Component {
   constructor() {
@@ -16,6 +18,13 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // 重要 error不要變成props原因
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -29,14 +38,13 @@ class Register extends Component {
       password: this.state.password,
       password2: this.state.password2,
     }
-    console.log(newUser);
-    axios.post('/api/users/register', newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response.data }))
+
+    this.props.registerUser(newUser)
   }
 
   render() {
-    const { errors } = this.state
+    // 重要 error要留著當state沒有變成props
+    const { errors } = this.state;
     return (
       <div className="register">
         <div className="container">
@@ -105,4 +113,17 @@ class Register extends Component {
   }
 }
 
-export default Register;
+registerUser.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired,
+}
+
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+    errors: state.errors,
+  }
+};
+
+export default connect(mapStateToProps, { registerUser })(Register);
