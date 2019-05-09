@@ -19,7 +19,7 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  // 重要 error不要變成props原因
+  // 重要: error不要變成props原因
   componentWillReceiveProps(nextProps) {
     if(nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -58,7 +58,6 @@ class Register extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
                     // 重要: is-invalid 是  bootstrap 的 invalid 方法 可以接 state
                     className={classnames('form-control form-control-lg', { 'is-invalid': errors.name })}
                     placeholder="Name"
