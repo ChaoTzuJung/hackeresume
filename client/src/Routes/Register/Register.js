@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/auth';
-
+import TextFeildGroup from '../../components/TextFeildGroup';
 class Register extends Component {
   constructor() {
     super();
@@ -55,53 +55,38 @@ class Register extends Component {
               <p className="lead text-center">Create your DevConnector account</p>
               {/* noValidate  */}
               <form noValidate onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    // 重要: is-invalid 是  bootstrap 的 invalid 方法 可以接 state
-                    className={classnames('form-control form-control-lg', { 'is-invalid': errors.name })}
-                    placeholder="Name"
-                    name="name"
-                    required
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                  />
-                  {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="email"
-                    className={classnames('form-control form-control-lg', { 'is-invalid': errors.email })}
-                    placeholder="Email Address"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                  />
-                  {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                  <small className="form-text text-muted">This site uses Gravatar so if you want a profile image, use a Gravatar email</small>
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className={classnames('form-control form-control-lg', { 'is-invalid': errors.password })}
-                    placeholder="Password"
-                    name="password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                  />
-                  {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="password"
-                    className={classnames('form-control form-control-lg', { 'is-invalid': errors.password2 })}
-                    placeholder="Confirm Password"
-                    name="password2"
-                    value={this.state.password2}
-                    onChange={this.handleChange}
-                  />
-                  {errors.password2 && <div className="invalid-feedback">{errors.password2}</div>}
-                </div>
+                <TextFeildGroup 
+                  placeholder="Name"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                  error={errors.name}
+                />
+                <TextFeildGroup 
+                  type="email"
+                  placeholder="Email Address"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  error={errors.email}
+                  info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
+                />
+                <TextFeildGroup 
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  error={errors.password}
+                />
+                <TextFeildGroup 
+                  type="password"
+                  placeholder="Confirm Password"
+                  name="password2"
+                  value={this.state.password2}
+                  onChange={this.handleChange}
+                  error={errors.password2}
+                />
                 <input
                   type="submit" className="btn btn-info btn-block mt-4" />
               </form>
