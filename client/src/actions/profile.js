@@ -1,0 +1,23 @@
+import axios from 'axios';
+import { PROFILE_LOADING, GET_PROFILE } from '../actions/types';
+
+export const getCurrentProfile = () => dispatch => {
+    dispatch(setProfileLoading());
+    axios.get('/api/profile')
+        .then(res => 
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        .catch(err => 
+            dispatch({
+                type: GET_PROFILE,
+                payload: {}
+            })
+        )
+    );
+}
+
+export const setProfileLoading = () => ({
+    type: PROFILE_LOADING,
+});
