@@ -16,16 +16,22 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-    // 重要: error不要變成props原因(把傳過來的props加到狀態)
-    componentWillReceiveProps(nextProps) {
-      if(nextProps.auth.isAuthenticated) {
-        this.props.history.push('/dashboard');
-      }
-
-      if(nextProps.errors) {
-        this.setState({ errors: nextProps.errors });
-      }
+  componentDidMount() {
+    if(this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
     }
+  }
+
+  // 重要: error不要變成props原因(把傳過來的props加到狀態)
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+
+    if(nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
