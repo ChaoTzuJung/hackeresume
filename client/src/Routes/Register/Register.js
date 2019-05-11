@@ -19,6 +19,13 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // 不希望登入後，還能透過修改網址，進入到register頁面
+  componentDidMount() {
+    if(this.props.auth.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
+  }
+
   // 重要: error不要變成props原因
   componentWillReceiveProps(nextProps) {
     if(nextProps.errors) {

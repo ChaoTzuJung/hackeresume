@@ -15,7 +15,7 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
+  // 不希望登入後，還能透過修改網址，進入到login頁面
   componentDidMount() {
     if(this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');

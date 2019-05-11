@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 class Landing extends Component {
 
+  // 點擊logo判斷若是登入 不能進入landing page
   componentDidMount() {
     if(this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
