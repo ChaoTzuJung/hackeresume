@@ -34,7 +34,7 @@ if(localStorage.jwtToken) {
     store.dispatch(logoutUser());
     // Clear current profile
     store.dispatch(clearCurrentProfile());
-    // Redirect to login
+    // Redirect to login (來自原生js的處理，手動地址跳轉)
     window.location.href = '/login';
   }
 }

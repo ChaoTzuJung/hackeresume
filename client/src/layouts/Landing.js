@@ -8,6 +8,7 @@ class Landing extends Component {
   // 點擊logo判斷若是登入 不能進入landing page
   componentDidMount() {
     if(this.props.auth.isAuthenticated) {
+      // react-router 為我們提供好了方法(獲取路由參數 or 手動跳轉：)
       this.props.history.push('/dashboard');
     }
   }
