@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/auth';
 import TextFeildGroup from '../../components/TextFeildGroup';
+
 class Register extends Component {
   constructor() {
     super();

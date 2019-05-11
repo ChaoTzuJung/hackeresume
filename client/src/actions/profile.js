@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { PROFILE_LOADING, GET_PROFILE } from '../actions/types';
+import { PROFILE_LOADING, GET_PROFILE, CLEAR_CURRENT_PROFILE } from './types';
 
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
-    axios.get('/api/profile')
+    axios
+        .get('/api/profile')
         .then(res => 
             dispatch({
                 type: GET_PROFILE,
@@ -20,4 +21,8 @@ export const getCurrentProfile = () => dispatch => {
 
 export const setProfileLoading = () => ({
     type: PROFILE_LOADING,
+});
+
+export const clearCurrentProfile = () => ({
+    type: CLEAR_CURRENT_PROFILE,
 });

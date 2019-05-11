@@ -10,8 +10,9 @@ import Navbar from '../../layouts/Navbar';
 import Landing from '../../layouts/Landing';
 import Footer from '../../layouts/Footer';
 
-import Register from '../../Routes/Register';
-import Login from '../../Routes/Login';
+import Register from '../Register';
+import Login from '../Login';
+import Dashboard from '../Dashboard';
 
 import './App.css';
 
@@ -24,7 +25,7 @@ if(localStorage.jwtToken) {
   const decoded = jwt_decode(localStorage.jwtToken);
   // Set user and isAuthenicated
   store.dispatch(setCurrentUser(decoded));
-};
+
 
 const App = () => {
   return (
@@ -34,8 +35,9 @@ const App = () => {
           <Navbar />
           <Route exact path="/" component={Landing}/>
           <div className="container">
-            <Route exact path="/register" component={Register}/>
-            <Route exact path="/login" component={Login}/>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </div>
           <Footer />
         </div>
