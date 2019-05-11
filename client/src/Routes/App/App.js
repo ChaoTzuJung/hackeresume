@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import store from '../../store';
@@ -14,6 +14,8 @@ import Footer from '../../layouts/Footer';
 import Register from '../Register';
 import Login from '../Login';
 import Dashboard from '../Dashboard';
+import PrivateRoute from '../Private'; // 防止為登入就進入dashboard
+
 
 import './App.css';
 
@@ -38,7 +40,8 @@ if(localStorage.jwtToken) {
     window.location.href = '/login';
   }
 }
-
+// Private Route 都要被 Switch 包著？ 解決 一些奇怪的 Redirct issue
+// 其中 Switch 表示只會顯示第一個符合條件的 PrivateRoute 組件喔！
 const App = () => {
   return (
     <Provider store={store}>
@@ -49,7 +52,9 @@ const App = () => {
           <div className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/dashboard" component={Dashboard} />
+            <Switch>
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            </Switch>
           </div>
           <Footer />
         </div>
