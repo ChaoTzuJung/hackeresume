@@ -2,18 +2,22 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const TextFeildGroup = ({
-    type,
+const InputGroup = ({
     placeholder,
     name,
     value,
-    label,
     onChange,
-    disabled,
-    info,
     error,
+    icon,
+    type
 }) => (
-    <div className="form-group">
+    <div className="input-group mb-3">
+        {/* bootstrap 專門為input添加icon的css */}
+        <div className="input-group-prepend">
+            <span className="input-group-text">
+                <i className={icon} />
+            </span>
+        </div>
         <input
             type={type}
             // 重要: is-invalid 是  bootstrap 的 invalid 方法 可以接 state
@@ -23,27 +27,24 @@ const TextFeildGroup = ({
             required
             value={value}
             onChange={onChange}
-            disabled={disabled}
         />
-        {info && <small className="form-text text-muted">{info}</small>}
         {error && <div className="invalid-feedback">{error}</div>}
     </div>
 )
 
-TextFeildGroup.propTypes = {
-    type: PropTypes.string.isRequired,
+InputGroup.propTypes = {
     placeholder:  PropTypes.string,
     name:  PropTypes.string.isRequired,
     value:  PropTypes.string.isRequired,
     onChange:  PropTypes.func.isRequired,
-    disabled:  PropTypes.string,
-    info:  PropTypes.string,
     error:  PropTypes.string,
+    icon:  PropTypes.string,
+    type:  PropTypes.string.isRequired,
 }
 
-TextFeildGroup.defaultProps = {
+InputGroup.defaultProps = {
     type: 'text',
 }
 
-export default TextFeildGroup;
+export default InputGroup;
 
