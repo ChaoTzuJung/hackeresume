@@ -15,7 +15,7 @@ import Register from '../Register';
 import Login from '../Login';
 import Dashboard from '../Dashboard';
 import PrivateRoute from '../Private'; // 防止為登入就進入dashboard
-
+import CreateProfile from '../CreateProfile';
 
 import './App.css';
 
@@ -54,6 +54,9 @@ const App = () => {
             <Route exact path="/login" component={Login} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/create-profile" component={CreateProfile} />
             </Switch>
           </div>
           <Footer />

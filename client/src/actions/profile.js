@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PROFILE_LOADING, GET_PROFILE, CLEAR_CURRENT_PROFILE } from './types';
+import { PROFILE_LOADING, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_ERROR } from './types';
 
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
@@ -16,3 +16,16 @@ export const setProfileLoading = () => ({
 export const clearCurrentProfile = () => ({
     type: CLEAR_CURRENT_PROFILE,
 });
+
+// withRouter: pass this.props.history to component and do redirect
+export const createProfile = (profileData ,history) => dispatch => {
+    axios
+        .post('/api/profile', profileData)
+        .then(res => history.push('/dashboard'))
+        .catch(err => 
+            dispatch({
+                type: GET_ERROR,
+                payload: err.response.data
+            })
+        );
+}
