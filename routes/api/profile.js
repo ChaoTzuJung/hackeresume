@@ -117,13 +117,13 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
         profileFields.skills = req.body.skills.split(','); // '1,2,3,4' => [1,2,3,4]
     }
 
-    // Soical
-    profileFields.soical = {};
-    if(req.body.youtube) profileFields.soical.youtube = req.body.youtube;
-    if(req.body.twitter) profileFields.soical.twitter = req.body.twitter;
-    if(req.body.facebook) profileFields.soical.facebook = req.body.facebook;
-    if(req.body.linkedin) profileFields.soical.linkedin = req.body.linkedin;
-    if(req.body.instagram) profileFields.soical.instagram = req.body.instagram;
+    // social
+    profileFields.social = {};
+    if(req.body.youtube) profileFields.social.youtube = req.body.youtube;
+    if(req.body.twitter) profileFields.social.twitter = req.body.twitter;
+    if(req.body.facebook) profileFields.social.facebook = req.body.facebook;
+    if(req.body.linkedin) profileFields.social.linkedin = req.body.linkedin;
+    if(req.body.instagram) profileFields.social.instagram = req.body.instagram;
 
     // 找 logged 的 人
     Profile.findOne({ user: req.user.id })
