@@ -17,6 +17,7 @@ class Navbar extends Component {
     // 登入後顯示 avatar
     const authLinks = (
       <ul className="navbar-nav ml-auto">
+        <Link className="nav-link" to="/dashboard">Dashboard</Link>
         <li className="nav-item">
           <a href="#" className="nav-link" onClick={this.onLogoutClick}>
             {/* titile 屬性很特別 */}
