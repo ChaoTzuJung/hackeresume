@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PROFILE_LOADING, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_ERROR } from './types';
+import { PROFILE_LOADING, GET_PROFILE, CLEAR_CURRENT_PROFILE, GET_ERROR, SET_CURRENT_USER } from './types';
 
 export const getCurrentProfile = () => dispatch => {
     dispatch(setProfileLoading());
@@ -28,4 +28,22 @@ export const createProfile = (profileData ,history) => dispatch => {
                 payload: err.response.data
             })
         );
+}
+
+export const deleteAccount = () =>  dispatch => {
+    if(window.confirm('Are you sure? This can NOT be undone!')) {
+        axios
+            .delete('/api/profile')
+            .then(res => dispatch({
+                // set auth user with nothing profile and as call SET_CURRENT_USER, user is empty and isAuthenticated is false
+                type: SET_CURRENT_USER,
+                payload: {}
+            }))
+            .catch(err => 
+                dispatch({
+                    type: GET_ERROR,
+                    payload: err.response.data
+                })
+            );
+    }
 }
