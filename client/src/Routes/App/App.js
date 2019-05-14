@@ -18,6 +18,8 @@ import PrivateRoute from '../Private'; // 防止為登入就進入dashboard
 import CreateProfile from '../CreateProfile';
 import EditProfile from '../EditProfile';
 import AddExperience from '../AddExperience';
+import AddEducation from '../AddEducation';
+
 
 import './App.css';
 
@@ -65,7 +67,10 @@ const App = () => {
             </Switch>
             <Switch>
               <PrivateRoute exact path="/add-experience" component={AddExperience} />
-          </Switch>
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/add-education" component={AddEducation} />
+            </Switch>
           </div>
           <Footer />
         </div>
