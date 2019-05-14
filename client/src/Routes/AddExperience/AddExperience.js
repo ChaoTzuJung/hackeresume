@@ -5,6 +5,8 @@ import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextFieldGroup from '../../components/TextFeildGroup';
 import TextAreaFieldGroup from '../../components/TextAreaFieldGroup';
+import { addExperience } from '../../actions/profile';
+
 
 export class AddExperience extends Component {
     constructor(props) {
@@ -26,26 +28,28 @@ export class AddExperience extends Component {
         this.onCheck = this.onCheck.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.errors) {
+            this.setState({ errors: nextProps.errors })
+        }
+    }
+
     onSubmit(e) {
         e.preventDefault();
     
-        const profileData = {
-            handle: this.state.handle,
+        const expData = {
             company: this.state.company,
-            website: this.state.website,
+            title: this.state.title,
             location: this.state.location,
-            status: this.state.status,
-            skills: this.state.skills,
-            githubusername: this.state.githubusername,
-            bio: this.state.bio,
-            twitter: this.state.twitter,
-            facebook: this.state.facebook,
-            linkedin: this.state.linkedin,
-            youtube: this.state.youtube,
-            instagram: this.state.instagram
+            from: this.state.from,
+            to: this.state.to,
+            current: this.state.current,
+            description: this.state.description,
+            errors: this.state.errors,
+            disable: this.state.disable,
         };
     
-        this.props.createProfile(profileData, this.props.history);
+        this.props.addExperience(expData, this.props.history);
     }
     
     onChange(e) {
@@ -145,6 +149,7 @@ export class AddExperience extends Component {
 AddExperience.propTypes = {
     profile: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    addExperience: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -154,7 +159,7 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
     withRouter,
-    connect(mapStateToProps, { })
-  );
+    connect(mapStateToProps, { addExperience })
+);
 
 export default enhance(AddExperience)
