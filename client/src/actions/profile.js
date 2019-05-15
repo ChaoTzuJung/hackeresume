@@ -80,3 +80,16 @@ export const deleteExperience = id => dispatch => {
             payload: err.response.data
         }))
 }
+
+export const deleteEducation = id => dispatch => {
+    axios
+        .delete(`/api/profile/education/${id}`)
+        .then(res => dispatch({
+            type: GET_PROFILE,
+            payload: res.data
+        }))
+        .catch(err => dispatch({
+            type: GET_ERROR,
+            payload: err.response.data
+        }))
+}
