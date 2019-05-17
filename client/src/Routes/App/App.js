@@ -19,7 +19,7 @@ import CreateProfile from '../CreateProfile';
 import EditProfile from '../EditProfile';
 import AddExperience from '../AddExperience';
 import AddEducation from '../AddEducation';
-
+import Profiles from '../Profiles';
 
 import './App.css';
 
@@ -56,6 +56,7 @@ const App = () => {
           <div className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/profiles" component={Profiles} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>
