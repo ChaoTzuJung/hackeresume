@@ -20,6 +20,7 @@ import EditProfile from '../EditProfile';
 import AddExperience from '../AddExperience';
 import AddEducation from '../AddEducation';
 import Profiles from '../Profiles';
+import Profile from '../Profile';
 
 import './App.css';
 
@@ -57,6 +58,8 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/profiles" component={Profiles} />
+            {/* 重要: 當route 有 id時 */}
+            <Route exact path="/profile/:handle" component={Profile} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>
