@@ -21,6 +21,7 @@ import AddExperience from '../AddExperience';
 import AddEducation from '../AddEducation';
 import Profiles from '../Profiles';
 import Profile from '../Profile';
+import Posts from '../Posts';
 import NotFound from '../NotFound';
 
 import './App.css';
@@ -61,7 +62,6 @@ const App = () => {
             <Route exact path="/profiles" component={Profiles} />
             {/* 重要: 當route 有 id時 */}
             <Route exact path="/profile/:handle" component={Profile} />
-            <Route exact path="/not-found" component={NotFound} />
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>
@@ -77,6 +77,10 @@ const App = () => {
             <Switch>
               <PrivateRoute exact path="/add-education" component={AddEducation} />
             </Switch>
+            <Switch>
+              <PrivateRoute exact path="/feed" component={Posts} />
+            </Switch>
+            <Route exact path="/not-found" component={NotFound} />
           </div>
           <Footer />
         </div>
