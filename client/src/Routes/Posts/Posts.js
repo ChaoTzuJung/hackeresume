@@ -18,6 +18,7 @@ class Posts extends Component {
         if (posts === null || loading) {
             postContent = <Spinner />;
         } else {
+            console.log(posts)
             postContent = <PostFeed posts={posts} />;
         }
         return (
