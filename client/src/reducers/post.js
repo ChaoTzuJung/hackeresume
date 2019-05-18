@@ -1,4 +1,4 @@
-import { ADD_POST } from '../actions/types';
+import { ADD_POST, POST_LOADING, GET_POST } from '../actions/types';
 
 // 重要: post的資料結構
 const initialState = {
@@ -9,6 +9,17 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch (action.type) {
+        case POST_LOADING:
+            return {
+                ...state,
+                loading: true
+            };
+        case GET_POST:
+            return {
+                ...state,
+                post: action.payload, // 把 data 放入 Object
+                loading: false
+            };
         // 重要: 就是單純在 array 內新增一個 object
         case ADD_POST:
         return {
