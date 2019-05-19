@@ -1,4 +1,10 @@
-module.exports = {
-    mongoURI: 'mongodb://alan:J122872769@ds139242.mlab.com:39242/25sprout',
-    secretOrKey: 'secret'
-};
+if(process.env.NODE_ENV === 'production') {
+    console.log('run production');
+    module.exports = require('./keys_prod');
+} else if (process.env.NODE_ENV === 'develop') {
+    console.log('run develop');
+    module.exports = require('./keys_dev');
+} else {
+    console.log('run demo');
+    module.exports = require('./keys_demo');
+}
