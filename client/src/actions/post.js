@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ADD_POST, GET_ERROR, GET_POSTS, POST_LOADING, DELETE_POST } from './types';
+import { ADD_POST, GET_ERROR, GET_POSTS, POST_LOADING, DELETE_POST, GET_POST } from './types';
 
 // Add Post
 export const addPost = postData => dispatch => {
@@ -9,12 +9,22 @@ export const addPost = postData => dispatch => {
         .catch(err => dispatch({ type: GET_ERROR, payload: err.response.data }));
 };
 
-// Get Posts
+// Get All Posts
 export const getPosts = () => dispatch => {
+    dispatch(setPostLoading());
     axios
         .get('/api/posts')
         .then(res => dispatch({ type: GET_POSTS, payload: res.data }))
         .catch(err => dispatch({ type: GET_POSTS, payload: null }));
+};
+
+// Get single Post
+export const getPost = id => dispatch => {
+    dispatch(setPostLoading());
+    axios
+        .get(`/api/posts/${id}`) // 重要: 會用網址的 :id 取相對post
+        .then(res => dispatch({ type: GET_POST, payload: res.data }))
+        .catch(err => dispatch({ type: GET_POST, payload: null }));
 };
 
 // Set loading state

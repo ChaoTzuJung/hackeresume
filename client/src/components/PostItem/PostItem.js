@@ -29,7 +29,7 @@ class PostItem extends Component {
         }
     }
     render() {
-        const { post, auth, showActions = true } = this.props;
+        const { post, auth, showActions } = this.props;
         return (
         <div className="card card-body mb-3">
             <div className="row">
@@ -91,6 +91,7 @@ class PostItem extends Component {
     }
 }
 
+// 希望顯示like button 預設是 true
 PostItem.defaultProps = {
     showActions: true
 };
