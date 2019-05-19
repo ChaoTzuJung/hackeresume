@@ -22,6 +22,7 @@ import AddEducation from '../AddEducation';
 import Profiles from '../Profiles';
 import Profile from '../Profile';
 import Posts from '../Posts';
+import Comment from '../Comment';
 import NotFound from '../NotFound';
 
 import './App.css';
@@ -79,6 +80,9 @@ const App = () => {
             </Switch>
             <Switch>
               <PrivateRoute exact path="/feed" component={Posts} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/comment/:id" component={Comment} />
             </Switch>
             <Route exact path="/not-found" component={NotFound} />
           </div>
