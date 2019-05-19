@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { ADD_POST, GET_ERROR, GET_POSTS, POST_LOADING, DELETE_POST, GET_POST } from './types';
+import { ADD_POST, GET_ERROR, GET_POSTS, POST_LOADING, DELETE_POST, GET_POST, CLEAR_ERROR } from './types';
 
 // Add Post
 export const addPost = postData => dispatch => {
+    dispatch(clearErrors());
     axios
         .post('/api/posts', postData)
         .then(res => dispatch({ type: ADD_POST, payload: res.data }))
@@ -62,9 +63,26 @@ export const removeLike = id => dispatch => {
 
 // Add comment
 export const addComment = (commentId, commentData) => dispatch => {
+    dispatch(clearErrors());
     axios
         .post(`/api/posts/comment/${commentId}`, commentData)
         // 超重要: 為何是GET_POST? 最後因為接收action payload(comments array（內涵多個object）) 的 global state 仍是 post object
         .then(res => dispatch({ type: GET_POST, payload: res.data }))
         .catch(err => dispatch({ type: GET_ERROR, payload: err.response.data }));
+};
+
+
+// Delete Comment
+export const deleteComment = (postId, commentId) => dispatch => {
+    axios
+        .delete(`/api/posts/comment/${postId}/${commentId}`)
+        .then(res => dispatch({ type: GET_POST, payload: res.data }))
+        .catch(err => dispatch({ type: GET_ERROR, payload: err.response.data}));
+};
+
+// Clear errors
+export const clearErrors = () => {
+    return {
+        type: CLEAR_ERROR
+    };
 };

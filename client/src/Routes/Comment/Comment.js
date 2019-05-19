@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import PostItem from '../../components/PostItem';
 import Spinner from '../../components/Spinner';
 import CommentForm from '../../components/CommentForm';
+import CommentFeed from '../../components/CommentFeed';
 import { getPost } from '../../actions/post';
 
 class Comment extends Component {
@@ -26,6 +27,7 @@ class Comment extends Component {
                     <PostItem post={post} showActions={false} />
                      {/* 傳 id 的手法 */}
                     <CommentForm commentId={post._id} />
+                    <CommentFeed commentId={post._id} comments={post.comments} />
                 </div>
             );
         }
