@@ -59,3 +59,12 @@ export const removeLike = id => dispatch => {
         .catch(err =>
         dispatch({ type: GET_ERROR, payload: err.response.data }));
 };
+
+// Add comment
+export const addComment = (commentId, commentData) => dispatch => {
+    axios
+        .post(`/api/posts/comment/${commentId}`, commentData)
+        // 超重要: 為何是GET_POST? 最後因為接收action payload(comments array（內涵多個object）) 的 global state 仍是 post object
+        .then(res => dispatch({ type: GET_POST, payload: res.data }))
+        .catch(err => dispatch({ type: GET_ERROR, payload: err.response.data }));
+};

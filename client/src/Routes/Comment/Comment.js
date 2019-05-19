@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PostItem from '../../components/PostItem';
 import Spinner from '../../components/Spinner';
+import CommentForm from '../../components/CommentForm';
 import { getPost } from '../../actions/post';
 
 class Comment extends Component {
@@ -23,6 +24,8 @@ class Comment extends Component {
                 <div>
                     {/* 不希望like button 顯示在 post item 用 showActions 管理 */}
                     <PostItem post={post} showActions={false} />
+                     {/* 傳 id 的手法 */}
+                    <CommentForm commentId={post._id} />
                 </div>
             );
         }
